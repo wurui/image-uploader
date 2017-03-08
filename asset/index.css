@@ -1,3 +1,113 @@
-.oxmod-image-uploader{
-/* CSS */
- }
+.oxmod-image-uploader {
+  /* CSS */
+}
+.oxmod-image-uploader ul {
+  padding: 10px 15px;
+}
+.oxmod-image-uploader select,
+.oxmod-image-uploader input,
+.oxmod-image-uploader button {
+  width: 100%;
+  height: 30px;
+  border: solid 1px #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+.oxmod-image-uploader input {
+  padding: 2px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.oxmod-image-uploader input[type=file]::-webkit-file-upload-button {
+  background-color: transparent;
+  border: none;
+  height: 24px;
+  line-height: 24px;
+}
+.oxmod-image-uploader select {
+  width: 100%;
+}
+.oxmod-image-uploader .submit {
+  width: 100%;
+}
+.oxmod-image-uploader .label {
+  font-size: 12px;
+  color: #999;
+}
+.oxmod-image-uploader li {
+  margin: 10px 0;
+}
+.oxmod-image-uploader li.type-hidden {
+  display: none;
+}
+.oxmod-image-uploader li.bottom {
+  margin-top: 20px;
+}
+.oxmod-image-uploader li.bottom button {
+  background-color: #09C;
+  border-color: #09f;
+  color: #fff;
+  letter-spacing: 5px;
+}
+.oxmod-image-uploader li.bottom button:hover {
+  opacity: .8;
+}
+.oxmod-image-uploader .btn-x {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  font-size: 30px;
+  line-height: 30px;
+  text-align: center;
+  color: red;
+  right: -5px;
+  top: -5px;
+  font-weight: 400;
+}
+.oxmod-image-uploader .imgupload-combo {
+  /*
+      flex-wrap:wrap;
+      display: flex;
+      justify-content: space-between;
+      */
+}
+.oxmod-image-uploader .input-file-trigger,
+.oxmod-image-uploader .imgpreview {
+  display: inline-block;
+  position: relative;
+  width: 30%;
+  height: 0px;
+  padding-bottom: 30%;
+  border: solid 2px #dcdcdc;
+  text-align: center;
+  color: #999;
+  font-size: 0;
+  vertical-align: top;
+  margin-left: 8px;
+  margin-bottom: 8px;
+}
+.oxmod-image-uploader .input-file-trigger:nth-child(3n+1),
+.oxmod-image-uploader .imgpreview:nth-child(3n+1) {
+  margin-left: 0;
+}
+.oxmod-image-uploader .imgpreview {
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center center;
+}
+.oxmod-image-uploader .input-file-trigger {
+  text-align: center;
+}
+.oxmod-image-uploader .input-file-trigger:before {
+  content: '+';
+  font-size: 50px;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  line-height: 50px;
+  left: 50%;
+  top: 50%;
+  margin-top: -25px;
+  margin-left: -25px;
+  position: absolute;
+}
