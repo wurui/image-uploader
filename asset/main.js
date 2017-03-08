@@ -107,7 +107,8 @@ define(['./megapix-image'], function (Megapix) {
         var i = 0,
             result = {
                 success: 0,
-                error: 0
+                error: 0,
+                urls:[]
             },
             do_one = function () {
                 var file = fileQ[i++];
@@ -118,7 +119,7 @@ define(['./megapix-image'], function (Megapix) {
                 //var $node = $('#' + fileId).attr('data-status', 'processing');
                 //var formData = new FormData();
                 //formData.append('file',file);
-                console.log('length:',file._data.length)
+                //console.log('length:',file._data.length)
                 $.ajax({
                     url: 'https://www.openxsl.com/ajax/oxmapi/oxmupload?sid='+conf.sid+'&oxm='+(conf.oxm||'image-uploader'),
                     type: 'POST',
@@ -135,6 +136,7 @@ define(['./megapix-image'], function (Megapix) {
                         } else {
                             // st = 'done';
                             result.success++;
+                            result.urls.push(r.data.cdnName);
                         }
                         do_one();
                     }
