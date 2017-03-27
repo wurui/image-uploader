@@ -127,6 +127,7 @@ define(['./megapix-image'], function (Megapix) {
                         base64:file._data
                     },
                     contentType: false,
+                    dataType:'json',
                     //processData: false,
                     success:function (r) {
 
