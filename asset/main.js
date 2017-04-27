@@ -137,7 +137,7 @@ define(['./megapix-image'], function (Megapix) {
                         } else {
                             // st = 'done';
                             result.success++;
-                            result.urls.push(r.data.cdnName);
+                            result.urls.push(r && r.data && r.data.cdnName);
                         }
                         do_one();
                     }
