@@ -180,8 +180,10 @@
       var img = new Image();
       img.src = URL.createObjectURL(srcImage);
       this.blob = srcImage;
-      srcImage = img;
-    }
+      srcImage = img;srcImage.onload =function(){
+            alert('srcImage width='+srcImage.naturalWidth)
+        }
+    }/*
     if (!srcImage.naturalWidth && !srcImage.naturalHeight) {
       var _this = this;
       srcImage.onload = srcImage.onerror = function() {
@@ -189,12 +191,12 @@
         if (listeners) {
           _this.imageLoadListeners = null;
           for (var i=0, len=listeners.length; i<len; i++) {
-            listeners[i]();
+            listeners[i](srcImage);
           }
         }
       };
       this.imageLoadListeners = [];
-    }
+    }*/
     this.srcImage = srcImage;
   }
 
