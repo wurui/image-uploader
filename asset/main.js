@@ -1,8 +1,7 @@
-define(['./exif'], function (exif) {
-    var ALLOW_SIZE = 100 * Math.pow(2, 10);//200K
+define(['./exif','./megapix-image'], function (exif,MegaPixImage) {
+    var ALLOW_SIZE = 500 * Math.pow(2, 10);//200K
     var ALLOW_TYPE_REG = /\.(png|jpg|jpeg)$/i;
     var g_uploading = false;
-
     var constructor = function (config) {
         this.fileQ = [];
         this.config = config;
@@ -75,7 +74,7 @@ define(['./exif'], function (exif) {
         reader.readAsDataURL(file);
     };
     constructor.prototype.compressedData = function (file, opts, fn) {
-
+        var quality = Math.min(.8, ALLOW_SIZE / file.size);
         //var file = fileObj.files['0'];
         //图片方向角 added by lzk
         var Orientation = null;
@@ -120,61 +119,15 @@ define(['./exif'], function (exif) {
                     canvas.height = expectHeight;
                     ctx.drawImage(this, 0, 0, expectWidth, expectHeight);
                     var base64 = null;
-                    //修复ios
-                    if (navigator.userAgent.match(/iphone/i)) {
-                        console.log('iphone');
-                        //alert(expectWidth + ',' + expectHeight);
-                        //如果方向角不为1，都需要进行旋转 added by lzk
-                        if (Orientation != "" && Orientation != 1) {
-                            console.log('旋转处理');
-                            switch (Orientation) {
-                                case 6://需要顺时针（向左）90度旋转
-                                    console.log('需要顺时针（向左）90度旋转');
-                                    rotateImg(this, 'left', canvas);
-                                    break;
-                                case 8://需要逆时针（向右）90度旋转
-                                    console.log('需要顺时针（向右）90度旋转');
-                                    rotateImg(this, 'right', canvas);
-                                    break;
-                                case 3://需要180度旋转
-                                    console.log('需要180度旋转');
-                                    rotateImg(this, 'right', canvas);//转两次
-                                    rotateImg(this, 'right', canvas);
-                                    break;
-                            }
-                        }
+                    var mpImg = new MegaPixImage(image);
+                    mpImg.render(canvas, {
+                        maxWidth: 800,
+                        maxHeight: 1200,
+                        quality: quality,
+                        orientation: Orientation
+                    });
+                    base64 = canvas.toDataURL("image/jpeg", 1);
 
-                        /*var mpImg = new MegaPixImage(image);
-                         mpImg.render(canvas, {
-                         maxWidth: 800,
-                         maxHeight: 1200,
-                         quality: 0.8,
-                         orientation: 8
-                         });*/
-                        base64 = canvas.toDataURL("image/jpeg", 0.8);
-                    }  else {
-                        //alert(Orientation);
-                        if (Orientation != "" && Orientation != 1) {
-                            //alert('旋转处理');
-                            switch (Orientation) {
-                                case 6://需要顺时针（向左）90度旋转
-                                    console.log('需要顺时针（向左）90度旋转');
-                                    rotateImg(this, 'left', canvas);
-                                    break;
-                                case 8://需要逆时针（向右）90度旋转
-                                    console.log('需要顺时针（向右）90度旋转');
-                                    rotateImg(this, 'right', canvas);
-                                    break;
-                                case 3://需要180度旋转
-                                    console.log('需要180度旋转');
-                                    rotateImg(this, 'right', canvas);//转两次
-                                    rotateImg(this, 'right', canvas);
-                                    break;
-                            }
-                        }
-
-                        base64 = canvas.toDataURL("image/jpeg", 0.4);
-                    }
                     //uploadImage(base64);
                     fn(base64,file)
                 };

@@ -11,15 +11,17 @@ define(['./main','mustache'], function (Main,Mustache) {
             $mod.on('change',function(e){
 
                 var tar= e.target;
-
+                var ts=new Date();
                 if(tar.type=='file'){
                     var file_id=tar.id;
+                    var $lbl=$('label[for='+file_id+']').addClass('loading');
                     uploader.addToQ(tar.files,function(arr){
                         for(var i=0;i<arr.length;i++){
-                            $('label[for='+file_id+']').before(Mustache.render(tpl_imgfile,{
+                            $lbl.removeClass('loading').before(Mustache.render(tpl_imgfile,{
                                 id:arr[i]._id,
                                 src:arr[i]._data
                             }));
+
                         }
 
                     });

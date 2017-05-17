@@ -111,3 +111,8 @@
   margin-left: -25px;
   position: absolute;
 }
+.oxmod-image-uploader .input-file-trigger.loading:before {
+  content: '加载中...';
+  font-size: 12px;
+  color: red;
+}
