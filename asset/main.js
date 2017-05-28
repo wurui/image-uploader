@@ -265,13 +265,14 @@ define(['./exif','./megapix-image'], function (exif,MegaPixImage) {
                             result.success++;
                             result.urls.push(r && r.data && r.data.cdnName);
                         }
-                        do_one();
+
                         if(typeof onprogress=='function'){
                             onprogress({
                                 success:!r.error,
                                 url: r && r.data && r.data.cdnName
                             });
                         }
+                        do_one();
                     }
                 });
             };
