@@ -126,7 +126,7 @@ define(['./exif','./megapix-image'], function (exif,MegaPixImage) {
                         quality: quality,
                         orientation: Orientation
                     });
-                    base64 = canvas.toDataURL("image/jpeg", 1);
+                    base64 = canvas.toDataURL("image/jpeg",.5);
 
                     //uploadImage(base64);
                     fn(base64,file)
