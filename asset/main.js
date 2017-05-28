@@ -1,5 +1,5 @@
 define(['./exif','./megapix-image'], function (exif,MegaPixImage) {
-    var ALLOW_SIZE = 500 * Math.pow(2, 10);//200K
+    var ALLOW_SIZE = 200 * Math.pow(2, 10);//200K
     var ALLOW_TYPE_REG = /\.(png|jpg|jpeg)$/i;
     var g_uploading = false;
     var constructor = function (config) {
@@ -227,6 +227,8 @@ define(['./exif','./megapix-image'], function (exif,MegaPixImage) {
                 oxm: 'image-uploader'
             };
 
+        var onprogress=this.onUploadProgress||null;
+
         var fileQ = this.fileQ;
         var i = 0,
             result = {
@@ -264,6 +266,12 @@ define(['./exif','./megapix-image'], function (exif,MegaPixImage) {
                             result.urls.push(r && r.data && r.data.cdnName);
                         }
                         do_one();
+                        if(typeof onprogress=='function'){
+                            onprogress({
+                                success:!r.error,
+                                url: r && r.data && r.data.cdnName
+                            });
+                        }
                     }
                 });
             };
