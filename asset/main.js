@@ -1,5 +1,5 @@
 define(['./exif','./megapix-image'], function (exif,MegaPixImage) {
-    var ALLOW_SIZE = 200 * Math.pow(2, 10);//200K
+    var ALLOW_SIZE = 200 * Math.pow(2, 10);//200K?? 好像不行?　500k还都能做到500k以内
     var ALLOW_TYPE_REG = /\.(png|jpg|jpeg)$/i;
     var g_uploading = false;
     var constructor = function (config) {
@@ -74,7 +74,7 @@ define(['./exif','./megapix-image'], function (exif,MegaPixImage) {
         reader.readAsDataURL(file);
     };
     constructor.prototype.compressedData = function (file, opts, fn) {
-        var quality = Math.min(.8, ALLOW_SIZE / file.size);
+        var quality = Math.min(.8, Math.max(ALLOW_SIZE / file.size,.1));
         //var file = fileObj.files['0'];
         //图片方向角 added by lzk
         var Orientation = null;
