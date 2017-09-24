@@ -5,7 +5,6 @@ define(['./main','mustache'], function (Main,Mustache) {
     return {
         init:function($mod){
             var uploader=new Main({
-                sid:'2JOWSNPZMIYYV24GGI0YX13L',
                 oxm:$mod.attr('ox-mod')
             });
             $mod.on('change',function(e){

@@ -1,4 +1,4 @@
-define(['./exif','./megapix-image'], function (exif,MegaPixImage) {
+define(['oxjs','./exif','./megapix-image'], function (OXJS,exif,MegaPixImage) {
     var ALLOW_SIZE = 200 * Math.pow(2, 10);//200K?? 好像不行?　500k还都能做到500k以内
     var ALLOW_TYPE_REG = /\.(png|jpg|jpeg)$/i;
     var g_uploading = false;
@@ -236,6 +236,7 @@ define(['./exif','./megapix-image'], function (exif,MegaPixImage) {
                 error: 0,
                 urls: []
             },
+            fileRest=OXJS.useREST('file/e0ee59439b39fcc3/u/git%2Fwurui').setDevHost('http://dev.openxsl.com/'),
             do_one = function () {
                 var file = fileQ[i++];
                 if (!file) {
@@ -246,6 +247,7 @@ define(['./exif','./megapix-image'], function (exif,MegaPixImage) {
                 //var formData = new FormData();
                 //formData.append('file',file);
                 //console.log('length:',file._data.length)
+                /*
                 $.ajax({
                     url: 'https://www.openxsl.com/ajax/oxmapi/oxmupload?sid=' + conf.sid + '&oxm=' + (conf.oxm || 'image-uploader'),
                     type: 'POST',
@@ -274,7 +276,26 @@ define(['./exif','./megapix-image'], function (exif,MegaPixImage) {
                         }
                         do_one();
                     }
-                });
+                });*/
+                fileRest.post({base64: file._data},function (r) {
+
+                        if (r.error) {
+                            // st = r.error == 'refused' ? 'refused' : 'error';
+                            result.error++;
+                        } else {
+                            // st = 'done';
+                            result.success++;
+                            result.urls.push(r && r.data && r.data.cdnName);
+                        }
+
+                        if(typeof onprogress=='function'){
+                            onprogress({
+                                success:!r.error,
+                                url: r && r.data && r.data.cdnName
+                            });
+                        }
+                        do_one();
+                    });
             };
         do_one();
 
