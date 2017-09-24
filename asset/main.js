@@ -241,7 +241,7 @@ define(['oxjs', './exif', './megapix-image'], function(OXJS, exif, MegaPixImage)
                 error: 0,
                 urls: []
             },
-            fileRest = OXJS.useREST('file/e0ee59439b39fcc3/u/git%2Fwurui').setDevHost('http://dev.openxsl.com/'),
+            fileRest = OXJS.useREST('file/'+conf.ds_id+'/u/'+encodeURIComponent(conf.uid)).setDevHost('http://dev.openxsl.com/'),
             do_one = function() {
                 var file = fileQ[i++];
                 if (!file) {
@@ -283,6 +283,7 @@ define(['oxjs', './exif', './megapix-image'], function(OXJS, exif, MegaPixImage)
                     }
                 });*/
                 fileRest.post({
+                    oxm:conf.oxm,
                     base64: file._data
                 }, function(r) {
 
