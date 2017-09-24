@@ -5,7 +5,9 @@ define(['./main','mustache'], function (Main,Mustache) {
     return {
         init:function($mod){
             var uploader=new Main({
-                oxm:$mod.attr('ox-mod')
+                oxm:$mod.attr('ox-mod'),
+                uid:$mod.attr('data-uid'),
+                ds_id:'e0ee59439b39fcc3'
             });
             $mod.on('change',function(e){
 

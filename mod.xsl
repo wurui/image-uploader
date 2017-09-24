@@ -2,7 +2,7 @@
 
     <xsl:template match="/root" name="wurui.image-uploader">
         <!-- className 'J_OXMod' required  -->
-        <div class="J_OXMod oxmod-image-uploader" ox-mod="image-uploader">
+        <div class="J_OXMod oxmod-image-uploader" ox-mod="image-uploader" data-uid="{login/uid}">
 
             <h2>
                 This is mod image-uploader demo<br/>
