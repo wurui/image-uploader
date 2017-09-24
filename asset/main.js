@@ -1,13 +1,13 @@
-define(['oxjs','./exif','./megapix-image'], function (OXJS,exif,MegaPixImage) {
-    var ALLOW_SIZE = 200 * Math.pow(2, 10);//200K?? 好像不行?　500k还都能做到500k以内
+define(['oxjs', './exif', './megapix-image'], function(OXJS, exif, MegaPixImage) {
+    var ALLOW_SIZE = 200 * Math.pow(2, 10); //200K?? 好像不行?　500k还都能做到500k以内
     var ALLOW_TYPE_REG = /\.(png|jpg|jpeg)$/i;
     var g_uploading = false;
-    var constructor = function (config) {
+    var constructor = function(config) {
         this.fileQ = [];
         this.config = config;
 
     };
-    constructor.prototype.addToQ = function (files, fn) {
+    constructor.prototype.addToQ = function(files, fn) {
 
         var validFiles = [];
         for (var i = 0; i < files.length; i++) {
@@ -20,7 +20,7 @@ define(['oxjs','./exif','./megapix-image'], function (OXJS,exif,MegaPixImage) {
         //  showImages(validFiles);
 
 
-        this.getImageSrc(validFiles, function (arr) {
+        this.getImageSrc(validFiles, function(arr) {
 
             _this.fileQ = _this.fileQ.concat(validFiles);
             fn && fn(validFiles);
@@ -28,7 +28,7 @@ define(['oxjs','./exif','./megapix-image'], function (OXJS,exif,MegaPixImage) {
         return validFiles;
     };
 
-    constructor.prototype.delFromQ = function (fileId) {
+    constructor.prototype.delFromQ = function(fileId) {
         var fileQ = this.fileQ;
         for (var i = 0; i < fileQ.length; i++) {
             var file = fileQ[i];
@@ -40,7 +40,7 @@ define(['oxjs','./exif','./megapix-image'], function (OXJS,exif,MegaPixImage) {
             }
         }
     };
-    constructor.prototype.getImageSrc = function (files, opts, fn) {
+    constructor.prototype.getImageSrc = function(files, opts, fn) {
         if (typeof opts == 'function') {
             fn = opts;
             opts = null;
@@ -48,9 +48,12 @@ define(['oxjs','./exif','./megapix-image'], function (OXJS,exif,MegaPixImage) {
 
         var arr = [],
             len = files.length,
-            cb = function (data, file) {
+            cb = function(data, file) {
                 var fileId = file._id;
-                arr[file._tmp_index] = {id: fileId, src: data}// Mustache.render(tpl, {id: fileId, src: data});
+                arr[file._tmp_index] = {
+                        id: fileId,
+                        src: data
+                    } // Mustache.render(tpl, {id: fileId, src: data});
                 delete file._tmp_index;
                 file._data = data;
                 len--;
@@ -64,17 +67,17 @@ define(['oxjs','./exif','./megapix-image'], function (OXJS,exif,MegaPixImage) {
         }
 
     };
-    constructor.prototype.getFileData = function (file, fn) {
+    constructor.prototype.getFileData = function(file, fn) {
 
         var reader = new FileReader()
-        reader.onload = function (e) {
+        reader.onload = function(e) {
             fn(e.target.result, file);
 
         }
         reader.readAsDataURL(file);
     };
-    constructor.prototype.compressedData = function (file, opts, fn) {
-        var quality = Math.min(.8, Math.max(ALLOW_SIZE / file.size,.1));
+    constructor.prototype.compressedData = function(file, opts, fn) {
+        var quality = Math.min(.8, Math.max(ALLOW_SIZE / file.size, .1));
         //var file = fileObj.files['0'];
         //图片方向角 added by lzk
         var Orientation = null;
@@ -88,7 +91,7 @@ define(['oxjs','./exif','./megapix-image'], function (OXJS,exif,MegaPixImage) {
             }
             // var URL = URL || webkitURL;
             //获取照片方向角属性，用户旋转控制
-            EXIF.getData(file, function () {
+            EXIF.getData(file, function() {
                 // alert(EXIF.pretty(this));
                 EXIF.getAllTags(this);
                 //alert(EXIF.getTag(this, 'Orientation'));
@@ -97,12 +100,12 @@ define(['oxjs','./exif','./megapix-image'], function (OXJS,exif,MegaPixImage) {
             });
 
             var oReader = new FileReader();
-            oReader.onload = function (e) {
+            oReader.onload = function(e) {
                 //var blob = URL.createObjectURL(file);
                 //_compress(blob, file, basePath);
                 var image = new Image();
                 image.src = e.target.result;
-                image.onload = function () {
+                image.onload = function() {
                     var expectWidth = this.naturalWidth;
                     var expectHeight = this.naturalHeight;
 
@@ -126,24 +129,24 @@ define(['oxjs','./exif','./megapix-image'], function (OXJS,exif,MegaPixImage) {
                         quality: quality,
                         orientation: Orientation
                     });
-                    base64 = canvas.toDataURL("image/jpeg",.5);
+                    base64 = canvas.toDataURL("image/jpeg", .5);
 
                     //uploadImage(base64);
-                    fn(base64,file)
+                    fn(base64, file)
                 };
             };
             oReader.readAsDataURL(file);
         }
     }
 
-//对图片旋转处理 added by lzk www.bcty365.com
+    //对图片旋转处理 added by lzk www.bcty365.com
     function rotateImg(img, direction, canvas) {
         //alert(img);
         //最小与最大旋转方向，图片旋转4次后回到原方向
         var min_step = 0;
         var max_step = 3;
         //var img = document.getElementById(pid);
-        if (img == null)return;
+        if (img == null) return;
         //img的高度和宽度不能在img元素隐藏后获取，否则会出错
         var height = img.height;
         var width = img.width;
@@ -199,7 +202,7 @@ define(['oxjs','./exif','./megapix-image'], function (OXJS,exif,MegaPixImage) {
 
 
     };
-    constructor.prototype.compressedFileData = function (file, opts, fn) {
+    constructor.prototype.compressedFileData = function(file, opts, fn) {
 
         if (typeof opts == 'function') {
             fn = opts;
@@ -208,26 +211,28 @@ define(['oxjs','./exif','./megapix-image'], function (OXJS,exif,MegaPixImage) {
         var megafix = new Megapix(file);
         var img = new Image();
         //.8 is mostly ok
-        var quality = Math.min(.8, ALLOW_SIZE / file.size);//console.log('quality',quality)
-        megafix.render(img, {quality: quality}, function (e) {
+        var quality = Math.min(.8, ALLOW_SIZE / file.size); //console.log('quality',quality)
+        megafix.render(img, {
+            quality: quality
+        }, function(e) {
             //console.log('img onload',img.src.length)
             fn(img.src, file);
 
         });
     };
-    constructor.prototype.startUpload = function (conf, fn) {
+    constructor.prototype.startUpload = function(conf, fn) {
         if (typeof conf == 'function') {
             fn = conf;
             conf = null;
         }
         if (!this.fileQ.length) {
-            return fn()//Popup.alert('Please select a file')
+            return fn() //Popup.alert('Please select a file')
         }
         conf = conf || this.config || {
-                oxm: 'image-uploader'
-            };
+            oxm: 'image-uploader'
+        };
 
-        var onprogress=this.onUploadProgress||null;
+        var onprogress = this.onUploadProgress || null;
 
         var fileQ = this.fileQ;
         var i = 0,
@@ -236,8 +241,8 @@ define(['oxjs','./exif','./megapix-image'], function (OXJS,exif,MegaPixImage) {
                 error: 0,
                 urls: []
             },
-            fileRest=OXJS.useREST('file/e0ee59439b39fcc3/u/git%2Fwurui').setDevHost('http://dev.openxsl.com/'),
-            do_one = function () {
+            fileRest = OXJS.useREST('file/e0ee59439b39fcc3/u/git%2Fwurui').setDevHost('http://dev.openxsl.com/'),
+            do_one = function() {
                 var file = fileQ[i++];
                 if (!file) {
                     return fn(null, result)
@@ -277,31 +282,34 @@ define(['oxjs','./exif','./megapix-image'], function (OXJS,exif,MegaPixImage) {
                         do_one();
                     }
                 });*/
-                fileRest.post({base64: file._data},function (r) {
+                fileRest.post({
+                    base64: file._data
+                }, function(r) {
 
-                        if (r.error) {
-                            // st = r.error == 'refused' ? 'refused' : 'error';
-                            result.error++;
-                        } else {
-                            // st = 'done';
-                            result.success++;
-                            result.urls.push(r && r.data && r.data.cdnName);
-                        }
+                    var cdnName = r && r.message;
+                    if (r.error) {
+                        // st = r.error == 'refused' ? 'refused' : 'error';
+                        result.error++;
+                    } else {
+                        // st = 'done';
+                        result.success++;
+                        result.urls.push(cdnName);
+                    }
 
-                        if(typeof onprogress=='function'){
-                            onprogress({
-                                success:!r.error,
-                                url: r && r.data && r.data.cdnName
-                            });
-                        }
-                        do_one();
-                    });
+                    if (typeof onprogress == 'function') {
+                        onprogress({
+                            success: !r.error,
+                            url: cdnName
+                        });
+                    }
+                    do_one();
+                });
             };
         do_one();
 
 
     };
-    constructor.prototype.filterFile = function (file) {
+    constructor.prototype.filterFile = function(file) {
         /*
          if (file.size > ALLOW_SIZE) {
          return
@@ -312,7 +320,7 @@ define(['oxjs','./exif','./megapix-image'], function (OXJS,exif,MegaPixImage) {
         var fileQ = this.fileQ;
         for (var i = 0; i < fileQ.length; i++) {
             var fileq = fileQ[i];
-            if (fileq.name == file.name && fileq.size == file.size) {//same file
+            if (fileq.name == file.name && fileq.size == file.size) { //same file
                 return
             }
         }
@@ -321,4 +329,3 @@ define(['oxjs','./exif','./megapix-image'], function (OXJS,exif,MegaPixImage) {
     };
     return constructor
 })
-
