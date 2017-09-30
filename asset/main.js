@@ -241,7 +241,7 @@ define(['oxjs', './exif', './megapix-image'], function(OXJS, exif, MegaPixImage)
                 error: 0,
                 urls: []
             },
-            fileRest = OXJS.useREST('file/'+conf.ds_id+'/u/'+encodeURIComponent(conf.uid)).setDevHost('http://dev.openxsl.com/'),
+            fileRest = OXJS.useREST('file').setDevHost('http://dev.openxsl.com/'),
             do_one = function() {
                 var file = fileQ[i++];
                 if (!file) {
