@@ -221,6 +221,7 @@ define(['oxjs', './exif', './megapix-image'], function(OXJS, exif, MegaPixImage)
         });
     };
     constructor.prototype.startUpload = function(conf, fn) {
+        return alert('方法已经取消')
         if (typeof conf == 'function') {
             fn = conf;
             conf = null;
